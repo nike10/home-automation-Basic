@@ -11,7 +11,7 @@ from hbmqtt.mqtt.constants import QOS_1
 logger = logging.getLogger(__name__)
 import time
 import datetime
-
+#using the pin numbers 16 and 18 of rpi
 in1 = 16
 in2 = 18
 
@@ -23,11 +23,14 @@ GPIO.setup(in2, GPIO.OUT)
 #GPIO.output(in2, False)
 i=0
 
+
+
+#broker configuration files
 config = {
     'listeners': {
         'default': {
             'type': 'tcp',
-            'bind': ''+':9999'    # 0.0.0.0:1883
+            'bind': ''+':9999'    # 0.0.0.0:1883  #connected to port number 9999
         }
     },
     'sys_interval': 10,
@@ -43,6 +46,14 @@ def startBroker():
     yield from broker.start()
 i=0
 
+
+#the brokwer is subscribed to the topic  relay, the mobile app publishes messages about the topic relay
+#the published messages are 'ON' and 'OFF'
+#when either of the messages are recieved the relayes are turned on or off as required
+
+
+
+#MQTT QOS 1 is used
 @asyncio.coroutine
 def brokerGetMessage():
     C = MQTTClient()
